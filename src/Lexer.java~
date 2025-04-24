@@ -731,7 +731,7 @@ class Lexer {
             }
           case 61: break;
           case 21: 
-            { column = 1 ; lineno += 1    ;
+            { column = 1 ; lineno += 1 ; tokencolumns = 0 ;
             }
           case 62: break;
           case 22: 

@@ -3,9 +3,10 @@ yacc.exe -Jthrows="Exception" -Jextends=ParserImpl -Jclass=Parser -Jnorun -J Par
 
 "C:\Program Files\Java\jdk-13.0.2\bin\javac.exe" *.java
 
+"C:\Program Files\Java\jdk-13.0.2\bin\java.exe" TestEnv
+
 goto comment
 del ..\samples\output_*.txt
-"C:\Program Files\Java\jdk-13.0.2\bin\java.exe" TestEnv
 
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\succ_01.minc    > ..\samples\output_succ_01.txt 
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\succ_02.minc    > ..\samples\output_succ_02.txt 

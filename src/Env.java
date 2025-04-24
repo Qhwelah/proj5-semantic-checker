@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Env
@@ -28,14 +27,5 @@ public class Env
                 return(null);
             }
         }
-        
-        // // this is a fake implementation
-        // // For the real implementation, I recommend to return a class object
-        // //   since the identifier's type can be variable or function
-        // //   whose detailed attributes will be different
-        // if(name.equals("a") == true) return "num";
-        // if(name.equals("b") == true) return "bool";
-        // if(name.equals("testfunc") == true) return "num()";
-        // return null;
     }
 }

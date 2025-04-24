@@ -54,18 +54,28 @@ decl_list       : decl_list decl                                { Debug("decl_li
 decl            : func_decl                                     { Debug("decl -> func_decl"                     ); $$ = decl____funcdecl($1); }
                 ;
 
-prim_type       : NUM                                           { Debug("prim_type -> num"                      ); $$ = primtype____NUM($1); }
-                ;
-
-type_spec       : prim_type                                     { Debug("type_spec -> prim_type"                ); $$ = typespec____primtype($1); }
-                ;
-
 func_decl       : type_spec IDENT LPAREN params RPAREN
                                 BEGIN local_decls               { Debug("func_decl -> type_spec ID(params) begin local_decls"              ); $<obj>$ = fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_8X_stmtlist_END($1,$2,$3,$4,$5,$6,$7          ); }
                                                   stmt_list END { Debug("                                                    stmt_list end"); $$ =      fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END($1,$2,$3,$4,$5,$6,$7,$8,$9,$10); }
                 ;
 
 params          :                                               { Debug("params -> eps"                         ); $$ = params____eps(); }
+                ;
+
+param_list
+param
+
+type_spec       : prim_type                                     { Debug("type_spec -> prim_type"                ); $$ = typespec____primtype($1); }
+                ;
+
+prim_type       : NUM                                           { Debug("prim_type -> num"                      ); $$ = primtype____NUM($1); }
+                ;
+
+local_decls     : local_decls  local_decl                       { Debug("local_decls -> local_decls local_decl" ); $$ = localdecls____localdecls_localdecl($1,$2); }
+                |                                               { Debug("local_decls -> eps"                    ); $$ = localdecls____eps(); }
+                ;
+
+local_decl      : type_spec IDENT SEMI                          { Debug("local_decl -> type_spec IDENT ;"       ); $$ = localdecl____typespec_IDENT_SEMI($1,$2,$3); }
                 ;
 
 stmt_list       : stmt_list stmt                                { Debug("stmt_list -> stmt_list stmt"           ); $$ = stmtlist____stmtlist_stmt($1,$2); }
@@ -79,18 +89,20 @@ stmt            : assign_stmt                                   { Debug("stmt ->
 assign_stmt     : IDENT ASSIGN expr SEMI                        { Debug("assign_stmt -> IDENT := expr ;"        ); $$ = assignstmt____IDENT_ASSIGN_expr_SEMI($1,$2,$3,$4); }
                 ;
 
+print_stmt
+
 return_stmt     : RETURN expr SEMI                              { Debug("return_stmt -> return expr ;"          ); $$ = returnstmt____RETURN_expr_SEMI($1,$2,$3); }
                 ;
 
-local_decls     : local_decls  local_decl                       { Debug("local_decls -> local_decls local_decl" ); $$ = localdecls____localdecls_localdecl($1,$2); }
-                |                                               { Debug("local_decls -> eps"                    ); $$ = localdecls____eps(); }
-                ;
+if_stmt
+while_stmt
+compound_stmt
 
-local_decl      : type_spec IDENT SEMI                          { Debug("local_decl -> type_spec IDENT ;"       ); $$ = localdecl____typespec_IDENT_SEMI($1,$2,$3); }
-                ;
 
 args            :                                               { Debug("args -> eps"                           ); $$ = args____eps(); }
                 ;
+
+arg_list
 
 expr            : expr ADD expr                                 { Debug("expr -> expr ADD expr"                 ); $$ = expr____expr_ADD_expr           ($1,$2,$3   ); }
                 | expr EQ  expr                                 { Debug("expr -> expr EQ  expr"                 ); $$ = expr____expr_EQ_expr            ($1,$2,$3   ); }

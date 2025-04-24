@@ -111,7 +111,7 @@ BLKCOMMENT          = "%("[^]*")%"
 {IDENT}                               { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.IDENT  ; }
 
 {LINECOMMENT}                         { column += yytext().length() ; }
-{NEWLINE}                             { column = 1 ; lineno += 1    ; }
+{NEWLINE}                             { column = 1 ; lineno += 1 ; tokencolumns = 0 ; }
 {WHITESPACE}                          { column += yytext().length() ; }
 {BLKCOMMENT}                          {  
                                       for(int i=1; i<yytext().length(); i++){

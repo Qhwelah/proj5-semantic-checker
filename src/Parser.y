@@ -59,23 +59,23 @@ func_decl       : type_spec IDENT LPAREN params RPAREN
                                                   stmt_list END { Debug("                                                    stmt_list end"); $$ =      fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END($1,$2,$3,$4,$5,$6,$7,$8,$9,$10); }
                 ;
 
-params          : param_list                                    { Debug("params -> param_list"                  );  //                     }
-                |                                               { Debug("params -> eps"                         ); $$ = params____eps(); }
+params          : param_list                                    { Debug("params -> param_list"                  ); $$ = params____paramlist($1);          }
+                |                                               { Debug("params -> eps"                         ); $$ = params____eps();                  }
                 ;
 
-param_list      : param_list COMMA param                        { Debug("param_list -> param_list, param"       );  // }
-                | param                                         { Debug("decl_list -> param"                    );  // }
+param_list      : param_list COMMA param                        { Debug("param_list -> param_list, param"       ); $$ = paramlist____paramlist_COMMA_param($1,$2,$3); }
+                | param                                         { Debug("decl_list -> param"                    ); $$ = paramlist____param($1);                       }
                 ;
 
-param           : type_spec IDENT                               { Debug("param -> type_spec IDENT"              );  // }
+param           : type_spec IDENT                               { Debug("param -> type_spec IDENT"              ); $$ = param____typespec_IDENT($1,$2);   }
                 ;
 
-type_spec       : prim_type                                     { Debug("type_spec -> prim_type"                ); $$ = typespec____primtype($1); }
-                | prim_type LBRACKET RBRACKET                   { Debug("type_spec -> prim_type[]"              ); // }
+type_spec       : prim_type                                     { Debug("type_spec -> prim_type"                ); $$ = typespec____primtype($1);                           }
+                | prim_type LBRACKET RBRACKET                   { Debug("type_spec -> prim_type[]"              ); $$ = typespec____primtype_LBRACKET_RBRACKET($1,$2,$3);   }
                 ;
 
-prim_type       : NUM                                           { Debug("prim_type -> num"                      ); $$ = primtype____NUM($1); }
-                | BOOL                                          { Debug("prim_type -> bool"                     ); // }
+prim_type       : NUM                                           { Debug("prim_type -> num"                      ); $$ = primtype____NUM($1);  }
+                | BOOL                                          { Debug("prim_type -> bool"                     ); $$ = primtype____BOOL($1); }
                 ;
 
 local_decls     : local_decls  local_decl                       { Debug("local_decls -> local_decls local_decl" ); $$ = localdecls____localdecls_localdecl($1,$2); }
@@ -90,37 +90,37 @@ stmt_list       : stmt_list stmt                                { Debug("stmt_li
                 ;
 
 stmt            : assign_stmt                                   { Debug("stmt -> assign_stmt"                   ); $$ = stmt____assignstmt  ($1); }
-                | print_stmt                                    { Debug("stmt -> print_stmt"                    ); $$ = stmt____returnstmt  ($1); }
+                | print_stmt                                    { Debug("stmt -> print_stmt"                    ); $$ = stmt____printstmt   ($1); }
                 | return_stmt                                   { Debug("stmt -> return_stmt"                   ); $$ = stmt____returnstmt  ($1); }
-                | if_stmt                                       { Debug("stmt -> if_stmt"                       ); $$ = stmt____returnstmt  ($1); }
-                | while_stmt                                    { Debug("stmt -> while_stmt"                    ); $$ = stmt____returnstmt  ($1); }
-                | compound_stmt                                 { Debug("stmt -> compound_stmt"                 ); $$ = stmt____returnstmt  ($1); }
+                | if_stmt                                       { Debug("stmt -> if_stmt"                       ); $$ = stmt____ifstmt      ($1); }
+                | while_stmt                                    { Debug("stmt -> while_stmt"                    ); $$ = stmt____whilestmt   ($1); }
+                | compound_stmt                                 { Debug("stmt -> compound_stmt"                 ); $$ = stmt____compoundstmt($1); }
                 ;
 
 assign_stmt     : IDENT ASSIGN expr SEMI                        { Debug("assign_stmt -> IDENT := expr ;"        ); $$ = assignstmt____IDENT_ASSIGN_expr_SEMI($1,$2,$3,$4); }
                 ;
 
-print_stmt      : PRINT expr SEMI                               { Debug("assign_stmt -> PRINT expr ;"           ); // $$ = assignstmt____IDENT_ASSIGN_expr_SEMI($1,$2,$3,$4); }
+print_stmt      : PRINT expr SEMI                               { Debug("assign_stmt -> PRINT expr ;"           ); $$ = printstmt____PRINT_expr_SEMI($1,$2,$3);   }
                 ;
 
 return_stmt     : RETURN expr SEMI                              { Debug("return_stmt -> return expr ;"          ); $$ = returnstmt____RETURN_expr_SEMI($1,$2,$3); }
                 ;
 
-if_stmt         : IF LPAREN expr RPAREN stmt ELSE stmt          { Debug("assign_stmt -> IF (expr) stmt ELSE stmt"   ); // $$ = assignstmt____IDENT_ASSIGN_expr_SEMI($1,$2,$3,$4); }
+if_stmt         : IF LPAREN expr RPAREN stmt ELSE stmt          { Debug("assign_stmt -> IF (expr) stmt ELSE stmt"   ); $$ = ifstmt____IF_LPAREN_expr_RPAREN_stmt_ELSE_stmt($1,$2,$3,$4,$5,$6,$7); }
                 ;
 
-while_stmt      : WHILE LPAREN expr RPAREN stmt                 { Debug("assign_stmt -> WHILE (expr) stmt"          ); // $$ = assignstmt____IDENT_ASSIGN_expr_SEMI($1,$2,$3,$4); }
+while_stmt      : WHILE LPAREN expr RPAREN stmt                 { Debug("assign_stmt -> WHILE (expr) stmt"          ); $$ = whilestmt____WHILE_LPAREN_expr_RPAREN_stmt($1,$2,$3,$4,$5); }
                 ;
 
-compound_stmt   : BEGIN local_decls stmt_list END               { Debug("assign_stmt -> BEGIN local_decls stmt_list END"  ); // $$ = assignstmt____IDENT_ASSIGN_expr_SEMI($1,$2,$3,$4); }
+compound_stmt   : BEGIN local_decls stmt_list END               { Debug("assign_stmt -> BEGIN local_decls stmt_list END"  ); $$ = compoundstmt____BEGIN_localdecls_stmtlist_END($1,$2,$3,$4);     }
                 ;
 
-args            : arg_list                                      { Debug("args -> arg_list"                      ); // }
-                |                                               { Debug("args -> eps"                           ); $$ = args____eps(); }
+args            : arg_list                                      { Debug("args -> arg_list"                      ); $$ = args____arglist($1);    }
+                |                                               { Debug("args -> eps"                           ); $$ = args____eps();          }
                 ;
 
-arg_list        : arg_list COMMA expr                           { Debug("arg_list -> arg_list, expr"            ); // }
-                | expr                                          { Debug("decl_list -> expr"                     ); // }
+arg_list        : arg_list COMMA expr                           { Debug("arg_list -> arg_list, expr"            ); $$ = arglist____arglist_COMMA_expr($1,$2,$3); }
+                | expr                                          { Debug("decl_list -> expr"                     ); $$ = arglist____expr($1);                     }
                 ;
 
 expr            : expr ADD expr                                 { Debug("expr -> expr ADD expr"                 ); $$ = expr____expr_ADD_expr           ($1,$2,$3   ); }

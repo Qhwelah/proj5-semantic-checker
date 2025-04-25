@@ -655,79 +655,79 @@ class Lexer {
             }
           case 42: break;
           case 2: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.IDENT  ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.IDENT  ;
             }
           case 43: break;
           case 3: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.BEGIN  ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.BEGIN  ;
             }
           case 44: break;
           case 4: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.END    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.END    ;
             }
           case 45: break;
           case 5: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.LPAREN ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.LPAREN ;
             }
           case 46: break;
           case 6: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.RPAREN ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.RPAREN ;
             }
           case 47: break;
           case 7: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.LBRACKET;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.LBRACKET;
             }
           case 48: break;
           case 8: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.RBRACKET;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.RBRACKET;
             }
           case 49: break;
           case 9: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.LT     ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.LT     ;
             }
           case 50: break;
           case 10: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.SUB    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.SUB    ;
             }
           case 51: break;
           case 11: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.ADD    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.ADD    ;
             }
           case 52: break;
           case 12: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.MUL    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.MUL    ;
             }
           case 53: break;
           case 13: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.DIV    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.DIV    ;
             }
           case 54: break;
           case 14: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.MOD    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.MOD    ;
             }
           case 55: break;
           case 15: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.GT     ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.GT     ;
             }
           case 56: break;
           case 16: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.EQ     ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.EQ     ;
             }
           case 57: break;
           case 17: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.SEMI   ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.SEMI   ;
             }
           case 58: break;
           case 18: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.COMMA  ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.COMMA  ;
             }
           case 59: break;
           case 19: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.DOT    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.DOT    ;
             }
           case 60: break;
           case 20: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NUM_LIT   ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NUM_LIT   ;
             }
           case 61: break;
           case 21: 
@@ -743,59 +743,59 @@ class Lexer {
             }
           case 64: break;
           case 24: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.IF     ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.IF     ;
             }
           case 65: break;
           case 25: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.OR     ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.OR     ;
             }
           case 66: break;
           case 26: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.ASSIGN ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.ASSIGN ;
             }
           case 67: break;
           case 27: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NE     ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NE     ;
             }
           case 68: break;
           case 28: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.LE     ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.LE     ;
             }
           case 69: break;
           case 29: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.GE     ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.GE     ;
             }
           case 70: break;
           case 30: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NEW    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NEW    ;
             }
           case 71: break;
           case 31: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NUM    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NUM    ;
             }
           case 72: break;
           case 32: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NOT    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.NOT    ;
             }
           case 73: break;
           case 33: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.AND    ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.AND    ;
             }
           case 74: break;
           case 34: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.ELSE   ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.ELSE   ;
             }
           case 75: break;
           case 35: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.BOOL_LIT  ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.BOOL_LIT  ;
             }
           case 76: break;
           case 36: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.SIZE   ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.SIZE   ;
             }
           case 77: break;
           case 37: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.BOOL   ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.BOOL   ;
             }
           case 78: break;
           case 38: 
@@ -808,15 +808,15 @@ class Lexer {
             }
           case 79: break;
           case 39: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.PRINT  ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.PRINT  ;
             }
           case 80: break;
           case 40: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.WHILE  ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.WHILE  ;
             }
           case 81: break;
           case 41: 
-            { parser.yylval = new ParserVal((Object)yytext()); column += tokencolumns; tokencolumns += yytext().length(); return Parser.RETURN ;
+            { parser.yylval = new ParserVal(new Token(yytext())); column += tokencolumns; tokencolumns += yytext().length(); return Parser.RETURN ;
             }
           case 82: break;
           default:

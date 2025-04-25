@@ -161,7 +161,7 @@ public class ParserImpl
         ParseTree.TypeSpec typespec = (ParseTree.TypeSpec)s1;
         Token              id       = (Token             )s2;
         ParseTree.LocalDecl localdecl = new ParseTree.LocalDecl(id.lexeme, typespec);
-        localdecl.reladdr = 1;
+        // localdecl.reladdr = 1;
         return localdecl;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,27 +222,28 @@ public class ParserImpl
         Token          id     = (Token         )s1;
         Token          assign = (Token         )s2;
         ParseTree.Expr expr   = (ParseTree.Expr)s3;
-        Object id_type = env.Get(id.lexeme);
-        {
-            // check if expr.type matches with id_type
-            if(id_type.equals("num")
-                && (expr instanceof ParseTree.ExprNumLit)
-                )
-            { // ok
-            }
-            else if(id_type.equals("num")
-                && (expr instanceof ParseTree.ExprFuncCall)
-                && (env.Get(((ParseTree.ExprFuncCall)expr).ident).equals("num()"))
-                )
-            { // ok
-            }
-            else
-            {
-                throw new Exception("semantic error");
-            }
-        }
+        // // Semantic analyzer not yet implemented
+        // Object id_type = env.Get(id.lexeme);
+        // {
+        //     // check if expr.type matches with id_type
+        //     if(id_type.equals("num")
+        //         && (expr instanceof ParseTree.ExprNumLit)
+        //         )
+        //     { // ok
+        //     }
+        //     else if(id_type.equals("num")
+        //         && (expr instanceof ParseTree.ExprFuncCall)
+        //         && (env.Get(((ParseTree.ExprFuncCall)expr).ident).equals("num()"))
+        //         )
+        //     { // ok
+        //     }
+        //     else
+        //     {
+        //         throw new Exception("semantic error");
+        //     }
+        // }
         ParseTree.AssignStmt stmt = new ParseTree.AssignStmt(id.lexeme, expr);
-        stmt.ident_reladdr = 1;
+        //stmt.ident_reladdr = 1;
         return stmt;
     }
 
@@ -502,14 +503,14 @@ public class ParserImpl
         // 4. create and return node that has the value_type of the id.lexeme
         Token id = (Token)s1;
         ParseTree.ExprIdent expr = new ParseTree.ExprIdent(id.lexeme);
-        expr.reladdr = 1;
+        // expr.reladdr = 1;
         return expr;
     }
     Object expr____NUMLIT(Object s1) throws Exception
     {
         // 1. create and return node that has int type
         Token token = (Token)s1;
-        double value = Integer.parseInt(token.lexeme);
+        double value = Double.parseDouble(token.lexeme);
         return new ParseTree.ExprNumLit(value);
     }
     // Object expr____NUMLIT(Object s1) throws Exception

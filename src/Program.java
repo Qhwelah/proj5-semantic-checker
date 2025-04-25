@@ -2,8 +2,7 @@ public class Program {
     public static void main(String[] args) throws Exception
     {
         java.io.Reader r = new java.io.StringReader
-        (""
-        +"num main()\n"
+        ("num main()\n"
         +"{\n"
         +"    num a;\n"
         +"    a <- 1;\n"

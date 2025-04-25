@@ -246,6 +246,19 @@ public class ParserImpl
         //stmt.ident_reladdr = 1;
         return stmt;
     }
+    Object assignstmt____IDENT_LBRACKET_expr_RBRACKET_ASSIGN_expr_SEMI(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7)
+    {
+        Token id = (Token)s1;
+        Token lbr = (Token)s2;
+        ParseTree.Expr expr1 = (ParseTree.Expr)s3;
+        Token rbr = (Token)s4;
+        Token assign = (Token)s5;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s6;
+        Token semi = (Token)s7;
+        String idName = String.valueOf(expr1);
+        ParseTree.AssignStmt stmtOut = new ParseTree.AssignStmt(idName, expr2);
+        return stmtOut;
+    }
 
     // == print_stmt == //
     Object printstmt____PRINT_expr_SEMI(Object s1, Object s2, Object s3) throws Exception

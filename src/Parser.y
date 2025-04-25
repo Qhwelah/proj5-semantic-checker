@@ -98,6 +98,7 @@ stmt            : assign_stmt                                   { Debug("stmt ->
                 ;
 
 assign_stmt     : IDENT ASSIGN expr SEMI                        { Debug("assign_stmt -> IDENT := expr ;"        ); $$ = assignstmt____IDENT_ASSIGN_expr_SEMI($1,$2,$3,$4); }
+                | IDENT LBRACKET expr RBRACKET ASSIGN expr SEMI { Debug("assign_stmt -> IDENT[numlit] := expr ;"); $$ = assignstmt____IDENT_LBRACKET_expr_RBRACKET_ASSIGN_expr_SEMI($1,$2,$3,$4,$5,$6,$7); }
                 ;
 
 print_stmt      : PRINT expr SEMI                               { Debug("assign_stmt -> PRINT expr ;"           ); $$ = printstmt____PRINT_expr_SEMI($1,$2,$3);   }

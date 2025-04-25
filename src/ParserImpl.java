@@ -116,15 +116,17 @@ public class ParserImpl
     // == type_spec == //
     Object typespec____primtype(Object s1)
     {
-        ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
-        return primtype;
+        // ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
+        // return primtype;
+        return s1;
     }
     Object typespec____primtype_LBRACKET_RBRACKET(Object s1, Object s2, Object s3) throws Exception
     {
         ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
-        Token lbr = (Token)s2;
-        Token rbr = (Token)s3;
-        return primtype;
+        // Token lbr = (Token)s2;
+        // Token rbr = (Token)s3;
+        // return primtype;
+        return s1;
     }
 
     // == prim_type == //
@@ -249,9 +251,9 @@ public class ParserImpl
     Object assignstmt____IDENT_LBRACKET_expr_RBRACKET_ASSIGN_expr_SEMI(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7)
     {
         Token id = (Token)s1;
-        Token lbr = (Token)s2;
+        // Token lbr = (Token)s2;
         ParseTree.Expr expr1 = (ParseTree.Expr)s3;
-        Token rbr = (Token)s4;
+        // Token rbr = (Token)s4;
         Token assign = (Token)s5;
         ParseTree.Expr expr2 = (ParseTree.Expr)s6;
         Token semi = (Token)s7;
@@ -564,18 +566,18 @@ public class ParserImpl
     {
         Token theNew = (Token)s1;
         ParseTree.TypeSpec thePrimType = (ParseTree.TypeSpec)s2;
-        Token lbr = (Token)s3;
+        // Token lbr = (Token)s3;
         ParseTree.Expr expr = (ParseTree.Expr)s4;
-        Token rbr = (Token)s5;
+        // Token rbr = (Token)s5;
         ParseTree.ExprArrayNew theArray = new ParseTree.ExprArrayNew(thePrimType, expr);
         return theArray;
     }
     Object expr____IDENT_LBRACKET_expr_RBRACKET(Object s1, Object s2, Object s3, Object s4) throws Exception
     {
         Token id = (Token)s1;
-        Token lbr = (Token)s2;
+        // Token lbr = (Token)s2;
         ParseTree.Expr expr = (ParseTree.Expr)s3;
-        Token rbr = (Token)s4;
+        // Token rbr = (Token)s4;
         String idName = String.valueOf(id.lexeme);
         ParseTree.ExprArrayElem theElem = new ParseTree.ExprArrayElem(idName, expr);
         return theElem;

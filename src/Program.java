@@ -11,16 +11,16 @@ public class Program {
         // +"}\n"
         // );
 
-         if(args.length == 0)
-         args = new String[]
-         {
-            "C:\\Users\\jdcoo\\Coding Stuff\\Compilers\\proj5-6-semantic-checker\\proj5-semantic-checker\\samples\\succ_08.minc",
-            //  "C:\\cmpsc470-minc-SemanticChecker-sample\\minc\\"
-            //  +"succ_01.minc",
-         };
+        //  if(args.length == 0)
+        //  args = new String[]
+        //  {
+        //     "C:\\Users\\jdcoo\\Coding Stuff\\Compilers\\proj5-6-semantic-checker\\proj5-semantic-checker\\samples\\succ_08.minc",
+        //     //  "C:\\cmpsc470-minc-SemanticChecker-sample\\minc\\"
+        //     //  +"succ_01.minc",
+        //  };
 
-        // if(args.length <= 0)
-        //     return;
+        if(args.length <= 0)
+            return;
         String minicpath = args[0];
         java.io.Reader r = new java.io.FileReader(minicpath);
 

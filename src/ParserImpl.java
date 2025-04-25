@@ -46,7 +46,7 @@ public class ParserImpl
 
     Object decl____funcdecl(Object s1) throws Exception
     {
-        ParseTree.FuncDecl funcdeclaration = s1;
+        ParseTree.FuncDecl funcdeclaration = (ParseTree.FuncDecl)s1;
         return funcdeclaration;
     }
 
@@ -80,7 +80,7 @@ public class ParserImpl
     // == params == //
     Object params____paramlist(Object s1) throws Exception
     {
-        List<ParseTree.Param> parseList = s1;
+        List<ParseTree.Param> parseList = (List<ParseTree.Param>)s1;
         return parseList;
     }
     Object params____eps() throws Exception 
@@ -91,15 +91,15 @@ public class ParserImpl
     // == param_list == //
     Object paramlist____paramlist_COMMA_param(Object s1, Object s2, Object s3) throws Exception
     {
-        List<ParseTree.Param> parseList = s1;
-        ParseTree.Param paramVal = s3;
+        List<ParseTree.Param> parseList = (List<ParseTree.Param>)s1;
+        ParseTree.Param paramVal = (ParseTree.Param)s3;
         parseList.add(paramVal);
         return parseList;
     }
     Object paramlist____param(Object s1) throws Exception
     {
         List<ParseTree.Param> theList = new ArrayList<ParseTree.Param>();
-        ParseTree.Param paramVal = s1;
+        ParseTree.Param paramVal = (ParseTree.Param)s1;
         theList.add(paramVal);
         return theList;
     }
@@ -107,8 +107,8 @@ public class ParserImpl
     // == param == //
     Object param____typespec_IDENT(Object s1, Object s2) throws Exception
     {
-        TypeSpec theType = s1;
-        String theIdentifier = s2.ToString();
+        ParseTree.TypeSpec theType = (ParseTree.TypeSpec)s1;
+        String theIdentifier = String.valueOf(s2);
         ParseTree.Param theTree = new ParseTree.Param(theIdentifier, theType);
         return theTree;
     }
@@ -121,18 +121,24 @@ public class ParserImpl
     }
     Object typespec____primtype_LBRACKET_RBRACKET(Object s1, Object s2, Object s3) throws Exception
     {
-        return null;
+        ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
+        Token lbr = (Token)s2;
+        Token rbr = (Token)s3;
+        return primtype;
     }
 
     // == prim_type == //
     Object primtype____NUM(Object s1) throws Exception
     {
-        ParseTree.TypeSpec typespec = new ParseTree.TypeSpec("int");
+        Token numKey = (Token)s1;
+        ParseTree.TypeSpec typespec = new ParseTree.TypeSpec(numKey.lexeme);
         return typespec;
     }
-    Object primtype____BOOL(Object s2) throws Exception
+    Object primtype____BOOL(Object s1) throws Exception
     {
-        return null;
+        Token boolKey = (Token)s1;
+        ParseTree.TypeSpec typespec = new ParseTree.TypeSpec(boolKey.lexeme);
+        return typespec;
     }
 
     // == local_decls == // ////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,7 +187,8 @@ public class ParserImpl
     }
     Object stmt____printstmt (Object s1) throws Exception
     {
-        return null;
+        assert(s1 instanceof ParseTree.PrintStmt);
+        return s1;
     }
     Object stmt____returnstmt  (Object s1) throws Exception
     {
@@ -190,15 +197,18 @@ public class ParserImpl
     }
     Object stmt____ifstmt (Object s1) throws Exception
     {
-        return null;
+        assert(s1 instanceof ParseTree.IfStmt);
+        return s1;
     }
     Object stmt____whilestmt(Object s1) throws Exception
     {
-        return null;
+        assert(s1 instanceof ParseTree.WhileStmt);
+        return s1;
     }
     Object stmt____compoundstmt(Object s1) throws Exception
     {
-        return null;
+        assert(s1 instanceof ParseTree.CompoundStmt);
+        return s1;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +249,11 @@ public class ParserImpl
     // == print_stmt == //
     Object printstmt____PRINT_expr_SEMI(Object s1, Object s2, Object s3) throws Exception
     {
-        return null;
+        Token print = (Token) s1;
+        ParseTree.Expr theExpr = (ParseTree.Expr) s2;
+        Token semi = (Token) s3;
+        ParseTree.PrintStmt stmt = new ParseTree.PrintStmt(theExpr);
+        return stmt;
     }
 
     // == return_stmt == //
@@ -255,25 +269,45 @@ public class ParserImpl
     // == if_stmt == //
     Object ifstmt____IF_LPAREN_expr_RPAREN_stmt_ELSE_stmt(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) throws Exception
     {
-        return null;
+        Token theIf = (Token)s1;
+        Token lparen = (Token)s2;
+        ParseTree.Expr expr = (ParseTree.Expr)s3;
+        Token rparen = (Token)s4;
+        ParseTree.Stmt stmt1 = (ParseTree.Stmt)s5;
+        Token theElse = (Token)s6;
+        ParseTree.Stmt stmt2 = (ParseTree.Stmt)s7;
+        ParseTree.IfStmt stmtOut = new ParseTree.IfStmt(expr, stmt1, stmt2);
+        return stmtOut;
     }
 
     // == while_stmt == //
     Object whilestmt____WHILE_LPAREN_expr_RPAREN_stmt(Object s1, Object s2, Object s3, Object s4, Object s5) throws Exception
     {
-        return null;
+        Token theWhile = (Token)s1;
+        Token lparen = (Token)s2;
+        ParseTree.Expr expr = (ParseTree.Expr)s3;
+        Token rparen = (Token)s4;
+        ParseTree.Stmt stmt1 = (ParseTree.Stmt)s5;
+        ParseTree.WhileStmt stmtOut = new ParseTree.WhileStmt(expr, stmt1);
+        return stmtOut;
     }
 
     // == compound_stmt == //
     Object compoundstmt____BEGIN_localdecls_stmtlist_END(Object s1, Object s2, Object s3, Object s4) throws Exception
     {
-        return null;
+        Token begin = (Token)s1;
+        ArrayList<ParseTree.LocalDecl> localDeclsList = (ArrayList<ParseTree.LocalDecl>)s2;
+        ArrayList<ParseTree.Stmt> stmtList = (ArrayList<ParseTree.Stmt>)s3;
+        Token end = (Token)s4;
+        ParseTree.CompoundStmt stmtOut = new ParseTree.CompoundStmt(localDeclsList, stmtList);
+        return stmtOut;
     }
     
     // == args == //
     Object args____arglist(Object s1) throws Exception
     {
-        return null;
+        List<ParseTree.Arg> theList = (List<ParseTree.Arg>)s1;
+        return theList;
     }
     Object args____eps() throws Exception
     {
@@ -283,11 +317,20 @@ public class ParserImpl
     // == arg_list == //
     Object arglist____arglist_COMMA_expr(Object s1, Object s2, Object s3) throws Exception
     {
-        return null;
+        List<ParseTree.Arg> theList = (List<ParseTree.Arg>)s1;
+        Token comma = (Token)s2;
+        ParseTree.Expr expr = (ParseTree.Expr)s3;
+        ParseTree.Arg theArg = new ParseTree.Arg(expr);
+        theList.add(theArg);
+        return theList;
     }
     Object arglist____expr(Object s1) throws Exception
     {
-        return null;
+        List<ParseTree.Arg> theList = new ArrayList<ParseTree.Arg>();
+        ParseTree.Expr expr = (ParseTree.Expr)s1;
+        ParseTree.Arg theArg = new ParseTree.Arg(expr);
+        theList.add(theArg);
+        return theList;
     }
 
     // == expr == // ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -476,8 +519,8 @@ public class ParserImpl
     // }
     Object expr____BOOLLIT(Object s1) throws Exception
     {
-        Token token = (Token)s1;
-        boolean value = (boolean)token;
+        Token theToken = (Token)s1;
+        boolean value = Boolean.parseBoolean(theToken.lexeme);
         return new ParseTree.ExprBoolLit(value);
     }
     Object expr____IDENT_LPAREN_args_RPAREN(Object s1, Object s2, Object s3, Object s4) throws Exception
@@ -505,15 +548,32 @@ public class ParserImpl
     }
     Object expr____NEW_primtype_LBRACKET_expr_RBRACKET(Object s1, Object s2, Object s3, Object s4, Object s5) throws Exception
     {
-        return null;
+        Token theNew = (Token)s1;
+        ParseTree.TypeSpec thePrimType = (ParseTree.TypeSpec)s2;
+        Token lbr = (Token)s3;
+        ParseTree.Expr expr = (ParseTree.Expr)s4;
+        Token rbr = (Token)s5;
+        ParseTree.ExprArrayNew theArray = new ParseTree.ExprArrayNew(thePrimType, expr);
+        return theArray;
     }
     Object expr____IDENT_LBRACKET_expr_RBRACKET(Object s1, Object s2, Object s3, Object s4) throws Exception
     {
-        return null;
+        Token id = (Token)s1;
+        Token lbr = (Token)s2;
+        ParseTree.Expr expr = (ParseTree.Expr)s3;
+        Token rbr = (Token)s4;
+        String idName = String.valueOf(id.lexeme);
+        ParseTree.ExprArrayElem theElem = new ParseTree.ExprArrayElem(idName, expr);
+        return theElem;
     }
     Object expr____IDENT_DOT_SIZE(Object s1, Object s2, Object s3) throws Exception
     {
-        return null;
+        Token id = (Token)s1;
+        Token dot = (Token)s2;
+        Token size = (Token)s3;
+        String idName = String.valueOf(id);
+        ParseTree.ExprArraySize arrSize = new ParseTree.ExprArraySize(idName);
+        return arrSize;
     }
 
     

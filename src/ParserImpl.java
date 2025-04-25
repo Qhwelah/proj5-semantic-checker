@@ -546,18 +546,18 @@ public class ParserImpl
         // 5. create and return node that has the value_type of env(id.lexeme).return_type
         Token                    id   = (Token                   )s1;
         ArrayList<ParseTree.Arg> args = (ArrayList<ParseTree.Arg>)s3;
-        Object func_attr = env.Get(id.lexeme);
-        {
-            // check if argument types match with function param types
-            if(env.Get(id.lexeme).equals("num()")
-                && (args.size() == 0)
-                )
-            {} // ok
-            else
-            {
-                throw new Exception("semantic error");
-            }
-        }
+        // Object func_attr = env.Get(id.lexeme);
+        // {
+        //     // check if argument types match with function param types
+        //     if(env.Get(id.lexeme).equals("num()")
+        //         && (args.size() == 0)
+        //         )
+        //     {} // ok
+        //     else
+        //     {
+        //         throw new Exception("semantic error");
+        //     }
+        // }
         return new ParseTree.ExprFuncCall(id.lexeme, args);
     }
     Object expr____NEW_primtype_LBRACKET_expr_RBRACKET(Object s1, Object s2, Object s3, Object s4, Object s5) throws Exception

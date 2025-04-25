@@ -28,6 +28,8 @@ public class ParserImpl
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // == decl_list == //
+
     Object decllist____decllist_decl(Object s1, Object s2) throws Exception
     {
         ArrayList<ParseTree.FuncDecl> decllist = (ArrayList<ParseTree.FuncDecl>)s1;
@@ -39,22 +41,15 @@ public class ParserImpl
     {
         return new ArrayList<ParseTree.FuncDecl>();
     }
+
+    // == decl == //
+
     Object decl____funcdecl(Object s1) throws Exception
     {
         return s1;
     }
-    Object primtype____NUM(Object s1) throws Exception
-    {
-        ParseTree.TypeSpec typespec = new ParseTree.TypeSpec("int");
-        return typespec;
-    }
-    Object typespec____primtype(Object s1)
-    {
-        ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
-        return primtype;
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // == func_decl == // //////////////////////////////////////////////////////////////////////////////////////////////
 
     Object fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_8X_stmtlist_END(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) throws Exception
     {
@@ -79,11 +74,82 @@ public class ParserImpl
         return funcdecl;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // == params == //
+    Object params____paramlist(Object s1) throws Exception
+    {
+        return null;
+    }
     Object params____eps() throws Exception 
     {
         return new ArrayList<ParseTree.Param>();
     }
 
+    // == param_list == //
+    Object paramlist____paramlist_COMMA_param(Object s1, Object s2, Object s3) throws Exception
+    {
+        return null;
+    }
+    Object paramlist____param(Object s1) throws Exception
+    {
+        return null;
+    }
+
+    // == param == //
+    Object param____typespec_IDENT(Object s1, Object s2) throws Exception
+    {
+        return null;
+    }
+    
+    // == type_spec == //
+    Object typespec____primtype(Object s1)
+    {
+        ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
+        return primtype;
+    }
+    Object typespec____primtype_LBRACKET_RBRACKET(Object s1, Object s2, Object s3) throws Exception
+    {
+        return null;
+    }
+
+    // == prim_type == //
+    Object primtype____NUM(Object s1) throws Exception
+    {
+        ParseTree.TypeSpec typespec = new ParseTree.TypeSpec("int");
+        return typespec;
+    }
+    Object primtype____BOOL(Object s2) throws Exception
+    {
+        return null;
+    }
+
+    // == local_decls == // ////////////////////////////////////////////////////////////////////////////////////////////
+
+    Object localdecls____localdecls_localdecl(Object s1, Object s2)
+    {
+        ArrayList<ParseTree.LocalDecl> localdecls = (ArrayList<ParseTree.LocalDecl>)s1;
+        ParseTree.LocalDecl            localdecl  = (ParseTree.LocalDecl           )s2;
+        localdecls.add(localdecl);
+        return localdecls;
+    }
+    Object localdecls____eps() throws Exception
+    {
+        return new ArrayList<ParseTree.LocalDecl>();
+    }
+
+    // == local_decl == //
+    Object localdecl____typespec_IDENT_SEMI(Object s1, Object s2, Object s3)
+    {
+        ParseTree.TypeSpec typespec = (ParseTree.TypeSpec)s1;
+        Token              id       = (Token             )s2;
+        ParseTree.LocalDecl localdecl = new ParseTree.LocalDecl(id.lexeme, typespec);
+        localdecl.reladdr = 1;
+        return localdecl;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // == stmt_list == //
     Object stmtlist____stmtlist_stmt(Object s1, Object s2) throws Exception
     {
         ArrayList<ParseTree.Stmt> stmtlist = (ArrayList<ParseTree.Stmt>)s1;
@@ -96,19 +162,37 @@ public class ParserImpl
         return new ArrayList<ParseTree.Stmt>();
     }
 
+    // == stmt == //
     Object stmt____assignstmt  (Object s1) throws Exception
     {
         assert(s1 instanceof ParseTree.AssignStmt);
         return s1;
+    }
+    Object stmt____printstmt (Object s1) throws Exception
+    {
+        return null;
     }
     Object stmt____returnstmt  (Object s1) throws Exception
     {
         assert(s1 instanceof ParseTree.ReturnStmt);
         return s1;
     }
+    Object stmt____ifstmt (Object s1) throws Exception
+    {
+        return null;
+    }
+    Object stmt____whilestmt(Object s1) throws Exception
+    {
+        return null;
+    }
+    Object stmt____compoundstmt(Object s1) throws Exception
+    {
+        return null;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // == assign_stmt == //
     Object assignstmt____IDENT_ASSIGN_expr_SEMI(Object s1, Object s2, Object s3, Object s4) throws Exception
     {
         // 1. check if ident.value_type matches with expr.value_type
@@ -140,6 +224,14 @@ public class ParserImpl
         stmt.ident_reladdr = 1;
         return stmt;
     }
+
+    // == print_stmt == //
+    Object printstmt____PRINT_expr_SEMI(Object s1, Object s2, Object s3) throws Exception
+    {
+        return null;
+    }
+
+    // == return_stmt == //
     Object returnstmt____RETURN_expr_SEMI(Object s1, Object s2, Object s3) throws Exception
     {
         // 1. check if expr.value_type matches with the current function return type
@@ -149,34 +241,45 @@ public class ParserImpl
         return new ParseTree.ReturnStmt(expr);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // == if_stmt == //
+    Object ifstmt____IF_LPAREN_expr_RPAREN_stmt_ELSE_stmt(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) throws Exception
+    {
+        return null;
+    }
 
-    Object localdecls____localdecls_localdecl(Object s1, Object s2)
+    // == while_stmt == //
+    Object whilestmt____WHILE_LPAREN_expr_RPAREN_stmt(Object s1, Object s2, Object s3, Object s4, Object s5) throws Exception
     {
-        ArrayList<ParseTree.LocalDecl> localdecls = (ArrayList<ParseTree.LocalDecl>)s1;
-        ParseTree.LocalDecl            localdecl  = (ParseTree.LocalDecl           )s2;
-        localdecls.add(localdecl);
-        return localdecls;
+        return null;
     }
-    Object localdecls____eps() throws Exception
+
+    // == compound_stmt == //
+    Object compoundstmt____BEGIN_localdecls_stmtlist_END(Object s1, Object s2, Object s3, Object s4) throws Exception
     {
-        return new ArrayList<ParseTree.LocalDecl>();
+        return null;
     }
-    Object localdecl____typespec_IDENT_SEMI(Object s1, Object s2, Object s3)
+    
+    // == args == //
+    Object args____arglist(Object s1) throws Exception
     {
-        ParseTree.TypeSpec typespec = (ParseTree.TypeSpec)s1;
-        Token              id       = (Token             )s2;
-        ParseTree.LocalDecl localdecl = new ParseTree.LocalDecl(id.lexeme, typespec);
-        localdecl.reladdr = 1;
-        return localdecl;
+        return null;
     }
     Object args____eps() throws Exception
     {
         return new ArrayList<ParseTree.Expr>();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // == arg_list == //
+    Object arglist____arglist_COMMA_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        return null;
+    }
+    Object arglist____expr(Object s1) throws Exception
+    {
+        return null;
+    }
 
+    // == expr == // ///////////////////////////////////////////////////////////////////////////////////////////////////
     Object expr____expr_ADD_expr(Object s1, Object s2, Object s3) throws Exception
     {
         // 1. check if expr1.value_type matches with the expr2.value_type
@@ -188,6 +291,51 @@ public class ParserImpl
         // check if expr1.type matches with expr2.type
         return new ParseTree.ExprAdd(expr1,expr2);
     }
+    Object expr____expr_SUB_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprSub(expr1,expr2);
+    }
+    Object expr____expr_MUL_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprMul(expr1,expr2);
+    }
+    Object expr____expr_DIV_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprDiv(expr1,expr2);
+    }
+    Object expr____expr_MOD_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprMod(expr1,expr2);
+    }
+    //
     Object expr____expr_EQ_expr(Object s1, Object s2, Object s3) throws Exception
     {
         // 1. check if expr1.value_type matches with the expr2.value_type
@@ -198,6 +346,91 @@ public class ParserImpl
         ParseTree.Expr expr2 = (ParseTree.Expr)s3;
         // check if expr1.type matches with expr2.type
         return new ParseTree.ExprEq(expr1,expr2);
+    }
+    Object expr____expr_NE_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprNe(expr1,expr2);
+    }
+    Object expr____expr_LE_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprLe(expr1,expr2);
+    }
+    Object expr____expr_LT_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprLt(expr1,expr2);
+    }
+    Object expr____expr_GE_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprGe(expr1,expr2);
+    }
+    Object expr____expr_GT_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprGt(expr1,expr2);
+    }
+    //
+    Object expr____expr_AND_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprAnd(expr1,expr2);
+    }
+    Object expr____expr_OR_expr(Object s1, Object s2, Object s3) throws Exception
+    {
+        // 1. check if expr1.value_type matches with the expr2.value_type
+        // 2. etc.
+        // 3. create and return node that has value_type
+        ParseTree.Expr expr1 = (ParseTree.Expr)s1;
+        Token          oper  = (Token         )s2;
+        ParseTree.Expr expr2 = (ParseTree.Expr)s3;
+        // check if expr1.type matches with expr2.type
+        return new ParseTree.ExprOr(expr1,expr2);
+    }
+    //
+    Object expr____NOT_expr(Object s1, Object s2) throws Exception
+    {
+        Token          oper  = (Token         )s1;
+        ParseTree.Expr expr  = (ParseTree.Expr)s2;
+        return new ParseTree.ExprNot(expr);
     }
     Object expr____LPAREN_expr_RPAREN(Object s1, Object s2, Object s3) throws Exception
     {
@@ -217,6 +450,24 @@ public class ParserImpl
         ParseTree.ExprIdent expr = new ParseTree.ExprIdent(id.lexeme);
         expr.reladdr = 1;
         return expr;
+    }
+    Object expr____NUMLIT(Object s1) throws Exception
+    {
+        // 1. create and return node that has int type
+        Token token = (Token)s1;
+        double value = Integer.parseInt(token.lexeme);
+        return new ParseTree.ExprNumLit(value);
+    }
+    // Object expr____NUMLIT(Object s1) throws Exception
+    // {
+    //     Double numlit = (Double)s1;
+    //     return new ParseTree.ExprNumLit(numlit);
+    // }
+    Object expr____BOOLLIT(Object s1) throws Exception
+    {
+        Token token = (Token)s1;
+        boolean value = (boolean)token;
+        return new ParseTree.ExprBoolLit(value);
     }
     Object expr____IDENT_LPAREN_args_RPAREN(Object s1, Object s2, Object s3, Object s4) throws Exception
     {
@@ -241,11 +492,19 @@ public class ParserImpl
         }
         return new ParseTree.ExprFuncCall(id.lexeme, args);
     }
-    Object expr____NUMLIT(Object s1) throws Exception
+    Object expr____NEW_primtype_LBRACKET_expr_RBRACKET(Object s1, Object s2, Object s3, Object s4, Object s5) throws Exception
     {
-        // 1. create and return node that has int type
-        Token token = (Token)s1;
-        double value = Integer.parseInt(token.lexeme);
-        return new ParseTree.ExprNumLit(value);
+        return null;
     }
+    Object expr____IDENT_LBRACKET_expr_RBRACKET(Object s1, Object s2, Object s3, Object s4) throws Exception
+    {
+        return null;
+    }
+    Object expr____IDENT_DOT_SIZE(Object s1, Object s2, Object s3) throws Exception
+    {
+        return null;
+    }
+
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

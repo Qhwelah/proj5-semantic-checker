@@ -22,7 +22,7 @@ If I manage that, then you will not be reading this readme.
 
 3. In the terminal, cd into src
 
-4. run ```cmd.exe /c ".\run.bat"``` on Windows or equivalent on your OS to run the bat file.
+4. run ```cmd.exe /c ".\RunTest.bat"``` on Windows or equivalent on your OS to run the bat file.
     Currently, only base operations like running the flex and yacc operations are active 
     as well as the TestEnv file. 
     

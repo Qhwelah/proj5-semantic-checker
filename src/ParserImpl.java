@@ -46,7 +46,8 @@ public class ParserImpl
 
     Object decl____funcdecl(Object s1) throws Exception
     {
-        return s1;
+        ParseTree.FuncDecl funcdeclaration = s1;
+        return funcdeclaration;
     }
 
     // == func_decl == // //////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,7 +80,8 @@ public class ParserImpl
     // == params == //
     Object params____paramlist(Object s1) throws Exception
     {
-        return null;
+        List<ParseTree.Param> parseList = s1;
+        return parseList;
     }
     Object params____eps() throws Exception 
     {
@@ -89,17 +91,26 @@ public class ParserImpl
     // == param_list == //
     Object paramlist____paramlist_COMMA_param(Object s1, Object s2, Object s3) throws Exception
     {
-        return null;
+        List<ParseTree.Param> parseList = s1;
+        ParseTree.Param paramVal = s3;
+        parseList.add(paramVal);
+        return parseList;
     }
     Object paramlist____param(Object s1) throws Exception
     {
-        return null;
+        List<ParseTree.Param> theList = new ArrayList<ParseTree.Param>();
+        ParseTree.Param paramVal = s1;
+        theList.add(paramVal);
+        return theList;
     }
 
     // == param == //
     Object param____typespec_IDENT(Object s1, Object s2) throws Exception
     {
-        return null;
+        TypeSpec theType = s1;
+        String theIdentifier = s2.ToString();
+        ParseTree.Param theTree = new ParseTree.Param(theIdentifier, theType);
+        return theTree;
     }
     
     // == type_spec == //

@@ -108,7 +108,8 @@ public class ParserImpl
     Object param____typespec_IDENT(Object s1, Object s2) throws Exception
     {
         ParseTree.TypeSpec theType = (ParseTree.TypeSpec)s1;
-        String theIdentifier = String.valueOf(s2);
+        Token id = (Token)s2;
+        String theIdentifier = (id.lexeme);
         ParseTree.Param theTree = new ParseTree.Param(theIdentifier, theType);
         return theTree;
     }
@@ -123,10 +124,12 @@ public class ParserImpl
     Object typespec____primtype_LBRACKET_RBRACKET(Object s1, Object s2, Object s3) throws Exception
     {
         ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
-        // Token lbr = (Token)s2;
-        // Token rbr = (Token)s3;
-        // return primtype;
-        return s1;
+        Token lbr = (Token)s2;
+        Token rbr = (Token)s3;
+        primtype.typename = primtype.typename + lbr.lexeme + rbr.lexeme; 
+        // TODO: check array type declaration
+        return primtype;
+        // return s1;
     }
 
     // == prim_type == //
@@ -257,8 +260,8 @@ public class ParserImpl
         Token assign = (Token)s5;
         ParseTree.Expr expr2 = (ParseTree.Expr)s6;
         Token semi = (Token)s7;
-        String idName = String.valueOf(expr1);
-        ParseTree.AssignStmt stmtOut = new ParseTree.AssignStmt(idName, expr2);
+        String idName = id.lexeme;
+        ParseTree.AssignStmtForArray stmtOut = new ParseTree.AssignStmtForArray(idName, expr1, expr2);
         return stmtOut;
     }
 
@@ -578,7 +581,7 @@ public class ParserImpl
         // Token lbr = (Token)s2;
         ParseTree.Expr expr = (ParseTree.Expr)s3;
         // Token rbr = (Token)s4;
-        String idName = String.valueOf(id.lexeme);
+        String idName = id.lexeme;
         ParseTree.ExprArrayElem theElem = new ParseTree.ExprArrayElem(idName, expr);
         return theElem;
     }
@@ -587,7 +590,7 @@ public class ParserImpl
         Token id = (Token)s1;
         Token dot = (Token)s2;
         Token size = (Token)s3;
-        String idName = String.valueOf(id);
+        String idName = (id.lexeme);
         ParseTree.ExprArraySize arrSize = new ParseTree.ExprArraySize(idName);
         return arrSize;
     }

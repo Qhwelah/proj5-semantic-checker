@@ -55,8 +55,8 @@ decl            : func_decl                                     { Debug("decl ->
                 ;
 
 func_decl       : type_spec IDENT LPAREN params RPAREN
-                                BEGIN local_decls               { Debug("func_decl -> type_spec ID(params) begin local_decls"              ); $<obj>$ = fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_8X_stmtlist_END($1,$2,$3,$4,$5,$6,$7          ); }
-                                                  stmt_list END { Debug("                                                    stmt_list end"); $$ =      fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END($1,$2,$3,$4,$5,$6,$7,$8,$9,$10); }
+                                BEGIN local_decls               { Debug("func_decl -> type_spec ID(params) begin local_decls"              ); $<obj>$ = funcdecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_8X_stmtlist_END($1,$2,$3,$4,$5,$6,$7          ); }
+                                                  stmt_list END { Debug("                                                    stmt_list end"); $$ =      funcdecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END($1,$2,$3,$4,$5,$6,$7,$8,$9,$10); }
                 ;
 
 params          : param_list                                    { Debug("params -> param_list"                  ); $$ = params____paramlist($1);          }

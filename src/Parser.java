@@ -665,11 +665,11 @@ case 4:
 break;
 case 5:
 //#line 58 "Parser.y"
-{ Debug("func_decl -> type_spec ID(params) begin local_decls"              ); yyval.obj = fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_8X_stmtlist_END(val_peek(6).obj,val_peek(5).obj,val_peek(4).obj,val_peek(3).obj,val_peek(2).obj,val_peek(1).obj,val_peek(0).obj          ); }
+{ Debug("func_decl -> type_spec ID(params) begin local_decls"              ); yyval.obj = funcdecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_8X_stmtlist_END(val_peek(6).obj,val_peek(5).obj,val_peek(4).obj,val_peek(3).obj,val_peek(2).obj,val_peek(1).obj,val_peek(0).obj          ); }
 break;
 case 6:
 //#line 59 "Parser.y"
-{ Debug("                                                    stmt_list end"); yyval.obj =      fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END(val_peek(9).obj,val_peek(8).obj,val_peek(7).obj,val_peek(6).obj,val_peek(5).obj,val_peek(4).obj,val_peek(3).obj,val_peek(2).obj,val_peek(1).obj,val_peek(0).obj); }
+{ Debug("                                                    stmt_list end"); yyval.obj =      funcdecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END(val_peek(9).obj,val_peek(8).obj,val_peek(7).obj,val_peek(6).obj,val_peek(5).obj,val_peek(4).obj,val_peek(3).obj,val_peek(2).obj,val_peek(1).obj,val_peek(0).obj); }
 break;
 case 7:
 //#line 62 "Parser.y"

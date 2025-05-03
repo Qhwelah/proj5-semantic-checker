@@ -52,15 +52,44 @@ public class ParserImpl
 
     // == func_decl == // //////////////////////////////////////////////////////////////////////////////////////////////
 
-    Object fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_8X_stmtlist_END(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) throws Exception
+    Object funcdecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_8X_stmtlist_END(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) throws Exception
     {
         // 1. add function_type_info object (name, return type, params) into the global scope of env
         // 2. create a new symbol table on top of env
         // 3. add parameters into top-local scope of env
         // 4. etc.
+
+        ParseTree.TypeSpec rettype = (ParseTree.TypeSpec)s1;
+        Token idToken = (Token)s2;
+        ArrayList<ParseTree.Param> params = (ArrayList<ParseTree.Param>)s4;
+
+        String id = idToken.lexeme;
+        ParseTreeInfo.FuncDeclInfo info = new ParseTreeInfo.FuncDeclInfo(); // create an info entry for this function
+        info.ident = id;
+        info.params = params;
+        info.rettype = rettype;
+
+        env.Put(id, info); // push this function to the env
+
+        env = new Env(env); // make a new env
+
+        int i = 0; // add params to env
+        while(i < params.size()){
+            env.Put(params.get(i).info.ident, params.get(i).info);
+            i = i+1;
+        }
+
+        ArrayList<ParseTree.LocalDecl> localDecls = (ArrayList<ParseTree.LocalDecl>) s7;
+        i = 0; // add local declarations to env
+        while(i < localDecls.size()){
+            env.Put(localDecls.get(i).info.ident, localDecls.get(i).info);
+            i = i+1;
+        }
+
+
         return null;
     }
-    Object fundecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7, Object s8, Object s9, Object s10) throws Exception
+    Object funcdecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7, Object s8, Object s9, Object s10) throws Exception
     {
         // 1. check if this function has at least one return type
         // 2. etc.
@@ -111,6 +140,10 @@ public class ParserImpl
         Token id = (Token)s2;
         String theIdentifier = (id.lexeme);
         ParseTree.Param theTree = new ParseTree.Param(theIdentifier, theType);
+
+        theTree.info.ident = theIdentifier;
+        theTree.info.type = theType;
+
         return theTree;
     }
     
@@ -166,6 +199,9 @@ public class ParserImpl
         ParseTree.TypeSpec typespec = (ParseTree.TypeSpec)s1;
         Token              id       = (Token             )s2;
         ParseTree.LocalDecl localdecl = new ParseTree.LocalDecl(id.lexeme, typespec);
+        
+        localdecl.info.ident = id.lexeme;
+        localdecl.info.type = typespec; 
         // localdecl.reladdr = 1;
         return localdecl;
     }

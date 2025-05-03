@@ -38,12 +38,26 @@ public class ParseTreeInfo
     }
     public static class FuncDeclInfo
     {
+        public String ident;
+        public ParseTree.TypeSpec rettype;
+        public ArrayList<ParseTree.Param> params;
+        public FuncDeclInfo() { //String id, ParseTree.TypeSpec retType, ArrayList<ParseTree.Param> params){
+            // this.ident = id;
+            // this.rettype = retType;
+            // this.params = params;
+        }
     }
     public static class ParamInfo
     {
+        public String ident;
+        public ParseTree.TypeSpec type;
+        public ParamInfo() {}
     }
     public static class LocalDeclInfo
     {
+        public String ident;
+        public ParseTree.TypeSpec type;
+        public LocalDeclInfo() {}
     }
     public static class StmtStmtInfo
     {

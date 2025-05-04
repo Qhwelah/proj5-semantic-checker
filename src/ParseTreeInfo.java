@@ -39,8 +39,8 @@ public class ParseTreeInfo
     public static class FuncDeclInfo
     {
         public String ident;
-        public ParseTree.TypeSpec rettype;
-        public ArrayList<ParseTree.Param> params;
+        public String type;
+        public ArrayList<ParseTreeInfo.ParamInfo> params;
         public FuncDeclInfo() { //String id, ParseTree.TypeSpec retType, ArrayList<ParseTree.Param> params){
             // this.ident = id;
             // this.rettype = retType;
@@ -48,7 +48,7 @@ public class ParseTreeInfo
         }
     }
     public static class ParamInfo
-    {
+    { // variable spaces for functions
         public String ident;
         public String type;
         public ParamInfo() {}
@@ -63,7 +63,10 @@ public class ParseTreeInfo
     {
     }
     public static class ArgInfo
-    {
+    { // actual values passed into functions
+        public String ident;
+        public String type;
+        public ArgInfo() {}
     }
     public static class ExprInfo
     {

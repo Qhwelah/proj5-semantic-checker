@@ -28,4 +28,8 @@ public class Env
             }
         }
     }
+    public boolean isDuplicate(String name){
+        if(theEnv.get(name) != null) {return true;} // only checks top table
+        else return false;
+    }
 }

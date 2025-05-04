@@ -66,23 +66,41 @@ public class ParserImpl
         String id = idToken.lexeme;
         ParseTreeInfo.FuncDeclInfo info = new ParseTreeInfo.FuncDeclInfo(); // create an info entry for this function
         info.ident = id;
-        info.params = params;
-        info.rettype = rettype;
+        // info.params = params;
+        info.type = rettype.typename;
 
+        ArrayList<ParseTreeInfo.ParamInfo> paramList = new ArrayList<ParseTreeInfo.ParamInfo>();
+        int i = 0;
+        while(i < params.size()){ // add params to a funcdeclinfo info block
+            ParseTreeInfo.ParamInfo tempParam = new ParseTreeInfo.ParamInfo();
+            tempParam.type = params.get(i).info.type;
+            tempParam.ident = params.get(i).info.ident;
+            paramList.add(tempParam);
+            i = i+1;
+        }
+        info.params = paramList;
         env.Put(id, info); // push this function to the env
 
         env = new Env(env); // make a new env
 
-        int i = 0; // add params to env
+        i = 0; // add params to env
         while(i < params.size()){
-            env.Put(params.get(i).info.ident, params.get(i).info);
+            String name = params.get(i).info.ident;
+            if(env.isDuplicate(name)) {
+                throw new Exception("Identifier " + name + " is already defined.");
+            }
+            env.Put(name, params.get(i).info);
             i = i+1;
         }
 
         ArrayList<ParseTree.LocalDecl> localDecls = (ArrayList<ParseTree.LocalDecl>) s7;
         i = 0; // add local declarations to env
         while(i < localDecls.size()){
-            env.Put(localDecls.get(i).info.ident, localDecls.get(i).info);
+            String name = localDecls.get(i).info.ident;
+            if(env.isDuplicate(name)) {
+                throw new Exception("Identifier " + name + " is already defined.");
+            }
+            env.Put(name, localDecls.get(i).info);
             i = i+1;
         }
 
@@ -101,6 +119,8 @@ public class ParserImpl
         ArrayList<ParseTree.Stmt>        stmtlist   = (ArrayList<ParseTree.Stmt>       )s9;
         Token                            end        = (Token                           )s10;
         ParseTree.FuncDecl funcdecl = new ParseTree.FuncDecl(id.lexeme, rettype, params, localdecls, stmtlist);
+        // also exit out of the current env here
+        env = env.prev;
         return funcdecl;
     }
 
@@ -366,7 +386,8 @@ public class ParserImpl
     }
     Object args____eps() throws Exception
     {
-        return new ArrayList<ParseTree.Expr>();
+        ArrayList<ParseTree.Arg> arglist = new ArrayList<ParseTree.Arg>();
+        return arglist;
     }
 
     // == arg_list == //
@@ -376,6 +397,7 @@ public class ParserImpl
         Token comma = (Token)s2;
         ParseTree.Expr expr = (ParseTree.Expr)s3;
         ParseTree.Arg theArg = new ParseTree.Arg(expr);
+        theArg.info.type = ((ParseTreeInfo.ExprInfo)expr.info).type;
         theList.add(theArg);
         return theList;
     }
@@ -384,6 +406,7 @@ public class ParserImpl
         List<ParseTree.Arg> theList = new ArrayList<ParseTree.Arg>();
         ParseTree.Expr expr = (ParseTree.Expr)s1;
         ParseTree.Arg theArg = new ParseTree.Arg(expr);
+        theArg.info.type = ((ParseTreeInfo.ExprInfo)expr.info).type;
         theList.add(theArg);
         return theList;
     }
@@ -655,8 +678,17 @@ public class ParserImpl
     Object expr____NOT_expr(Object s1, Object s2) throws Exception
     {
         Token          oper  = (Token         )s1;
-        ParseTree.Expr expr  = (ParseTree.Expr)s2;
-        return new ParseTree.ExprNot(expr);
+        ParseTree.Expr expr1  = (ParseTree.Expr)s2;
+        String typeOut = null;
+        if(expr1.info.type.equals("bool")){
+            typeOut = expr1.info.type;
+        } else {
+            throw new Exception("Unary operation " + oper.lexeme + " cannot be used with "
+             + expr1.info.type + " value.");
+        }
+        ParseTree.ExprNot expr = new ParseTree.ExprNot(expr1);
+        expr.info.type = typeOut; // assign the output type to whatever input was
+        return expr;
     }
     Object expr____LPAREN_expr_RPAREN(Object s1, Object s2, Object s3) throws Exception
     {
@@ -728,6 +760,35 @@ public class ParserImpl
         // 5. create and return node that has the value_type of env(id.lexeme).return_type
         Token                    id   = (Token                   )s1;
         ArrayList<ParseTree.Arg> args = (ArrayList<ParseTree.Arg>)s3;
+
+        String[] argNums = {"1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th"};
+        
+        Object func_attr = env.Get(id.lexeme);
+        ParseTreeInfo.FuncDeclInfo funcDescr = null;
+        if(func_attr instanceof ParseTreeInfo.FuncDeclInfo){
+            // pass
+        }
+        else{
+            throw new Exception("Identifier " + id.lexeme + " should be a function.");
+        }
+        funcDescr = ((ParseTreeInfo.FuncDeclInfo)func_attr);
+        if(funcDescr.params.size() != args.size()){
+            throw new Exception("Function " + id.lexeme +"() should be called with the correct number of arguments.");
+        }
+        int i = 0;
+        while(i < funcDescr.params.size()){
+            ParseTree.Arg arg = args.get(i);
+            ParseTreeInfo.ArgInfo argInfo = (ParseTreeInfo.ArgInfo)arg.info;
+            ParseTreeInfo.ParamInfo shouldBe = funcDescr.params.get(i);
+            if(argInfo.type.equals(shouldBe.type)){
+                //types match, so pass
+            }
+            else {
+                throw new Exception("The " + argNums[i] + " argument of function " + funcDescr.ident 
+                + "() should be " + shouldBe.type + " value, instead of " + argInfo.type + " value.");
+            }
+            i = i + 1;
+        }
         // Object func_attr = env.Get(id.lexeme);
         // {
         //     // check if argument types match with function param types
@@ -740,7 +801,9 @@ public class ParserImpl
         //         throw new Exception("semantic error");
         //     }
         // }
-        return new ParseTree.ExprFuncCall(id.lexeme, args);
+        ParseTree.ExprFuncCall expr = new ParseTree.ExprFuncCall(id.lexeme, args);
+        expr.info.type = funcDescr.type;
+        return expr;
     }
     Object expr____NEW_primtype_LBRACKET_expr_RBRACKET(Object s1, Object s2, Object s3, Object s4, Object s5) throws Exception
     {

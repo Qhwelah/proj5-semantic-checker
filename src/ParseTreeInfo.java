@@ -50,13 +50,13 @@ public class ParseTreeInfo
     public static class ParamInfo
     {
         public String ident;
-        public ParseTree.TypeSpec type;
+        public String type;
         public ParamInfo() {}
     }
     public static class LocalDeclInfo
     {
         public String ident;
-        public ParseTree.TypeSpec type;
+        public String type;
         public LocalDeclInfo() {}
     }
     public static class StmtStmtInfo
@@ -67,5 +67,7 @@ public class ParseTreeInfo
     }
     public static class ExprInfo
     {
+        public String type;
+        public ExprInfo() {}
     }
 }

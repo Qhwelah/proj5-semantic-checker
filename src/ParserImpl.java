@@ -1,5 +1,5 @@
+import java.rmi.server.ExportException;
 import java.util.*;
-import java.util.HashMap;
 
 @SuppressWarnings("unchecked")
 public class ParserImpl
@@ -142,7 +142,7 @@ public class ParserImpl
         ParseTree.Param theTree = new ParseTree.Param(theIdentifier, theType);
 
         theTree.info.ident = theIdentifier;
-        theTree.info.type = theType;
+        theTree.info.type = theType.typename;
 
         return theTree;
     }
@@ -201,7 +201,7 @@ public class ParserImpl
         ParseTree.LocalDecl localdecl = new ParseTree.LocalDecl(id.lexeme, typespec);
         
         localdecl.info.ident = id.lexeme;
-        localdecl.info.type = typespec; 
+        localdecl.info.type = typespec.typename; 
         // localdecl.reladdr = 1;
         return localdecl;
     }
@@ -398,7 +398,9 @@ public class ParserImpl
         Token          oper  = (Token         )s2;
         ParseTree.Expr expr2 = (ParseTree.Expr)s3;
         // check if expr1.type matches with expr2.type
-        return new ParseTree.ExprAdd(expr1,expr2);
+        ParseTree.ExprAdd expr = new ParseTree.ExprAdd(expr1,expr2);
+        expr.info.type = expr1.info.type; // assign the output type to whatever input was
+        return expr;
     }
     Object expr____expr_SUB_expr(Object s1, Object s2, Object s3) throws Exception
     {
@@ -557,6 +559,21 @@ public class ParserImpl
         // 4. create and return node that has the value_type of the id.lexeme
         Token id = (Token)s1;
         ParseTree.ExprIdent expr = new ParseTree.ExprIdent(id.lexeme);
+        Object infoOfIdent = env.Get(id.lexeme);
+
+        String theType = null;
+
+        if (infoOfIdent instanceof ParseTreeInfo.ExprInfo) {
+            theType = ((ParseTreeInfo.ExprInfo) infoOfIdent).type;
+        } else if (infoOfIdent instanceof ParseTreeInfo.ParamInfo) {
+            theType = ((ParseTreeInfo.ParamInfo) infoOfIdent).type;
+        } else if (infoOfIdent instanceof ParseTreeInfo.LocalDeclInfo) {
+            theType = ((ParseTreeInfo.LocalDeclInfo) infoOfIdent).type;
+        } else { // if null or other type
+            throw new Exception("Identifier " + id.lexeme + " is not defined.");
+            //System.err.println("Unknown or null info object: " + infoOfIdent);
+        }
+        expr.info.type = theType;
         // expr.reladdr = 1;
         return expr;
     }
@@ -565,7 +582,12 @@ public class ParserImpl
         // 1. create and return node that has int type
         Token token = (Token)s1;
         double value = Double.parseDouble(token.lexeme);
-        return new ParseTree.ExprNumLit(value);
+        ParseTree.ExprNumLit expr = new ParseTree.ExprNumLit(value);
+        
+        // specify the number type for hardcoded numbers
+        // ParseTree.TypeSpec type = new ParseTree.TypeSpec("num"); 
+        expr.info.type = new String("num");
+        return expr;
     }
     // Object expr____NUMLIT(Object s1) throws Exception
     // {
@@ -576,7 +598,11 @@ public class ParserImpl
     {
         Token theToken = (Token)s1;
         boolean value = Boolean.parseBoolean(theToken.lexeme);
-        return new ParseTree.ExprBoolLit(value);
+
+        ParseTree.ExprBoolLit expr = new ParseTree.ExprBoolLit(value);
+        // expr.info.type = new ParseTree.TypeSpec("bool");
+        expr.info.type = new String("bool");
+        return expr;
     }
     Object expr____IDENT_LPAREN_args_RPAREN(Object s1, Object s2, Object s3, Object s4) throws Exception
     {

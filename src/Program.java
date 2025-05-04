@@ -6,7 +6,7 @@ public class Program {
         +"num main(num x)\n"
         +"{\n"
         +"    num a;\n"
-        +"    a <- 1;\n"
+        +"    a <- b + 1;\n"
         +"    return 0;\n"
         +"}\n"
         );

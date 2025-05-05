@@ -170,9 +170,11 @@ public class ParserImpl
     // == type_spec == //
     Object typespec____primtype(Object s1)
     {
-        // ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
-        // return primtype;
-        return s1;
+        ParseTree.TypeSpec primtype = (ParseTree.TypeSpec)s1;
+        ParseTreeInfo.TypeSpecInfo theInfo = (ParseTreeInfo.TypeSpecInfo)primtype.info;
+        primtype.info.type = theInfo.type;
+        return primtype;
+        // return s1;
     }
     Object typespec____primtype_LBRACKET_RBRACKET(Object s1, Object s2, Object s3) throws Exception
     {
@@ -180,7 +182,9 @@ public class ParserImpl
         Token lbr = (Token)s2;
         Token rbr = (Token)s3;
         primtype.typename = primtype.typename + lbr.lexeme + rbr.lexeme; 
-        // TODO: check array type declaration
+        ParseTreeInfo.TypeSpecInfo theInfo = (ParseTreeInfo.TypeSpecInfo)primtype.info;
+        theInfo.type = primtype.typename;
+        // check array type declaration - DONE
         return primtype;
         // return s1;
     }
@@ -190,12 +194,14 @@ public class ParserImpl
     {
         Token numKey = (Token)s1;
         ParseTree.TypeSpec typespec = new ParseTree.TypeSpec(numKey.lexeme);
+        typespec.info.type = numKey.lexeme;
         return typespec;
     }
     Object primtype____BOOL(Object s1) throws Exception
     {
         Token boolKey = (Token)s1;
         ParseTree.TypeSpec typespec = new ParseTree.TypeSpec(boolKey.lexeme);
+        typespec.info.type = boolKey.lexeme;
         return typespec;
     }
 
@@ -283,6 +289,35 @@ public class ParserImpl
         Token          id     = (Token         )s1;
         Token          assign = (Token         )s2;
         ParseTree.Expr expr   = (ParseTree.Expr)s3;
+        Object infoOfIdent = env.Get(id.lexeme);
+        ParseTreeInfo.ExprInfo exprInfo = (ParseTreeInfo.ExprInfo)expr.info;
+
+        // will need several options for this: (instanceOf)
+        //ParseTreeInfo.LocalDeclInfo varInfo = (ParseTreeInfo.LocalDeclInfo)var;
+
+        String theType = null;
+
+        if (infoOfIdent instanceof ParseTreeInfo.ExprInfo) {
+            theType = ((ParseTreeInfo.ExprInfo) infoOfIdent).type;
+        } else if (infoOfIdent instanceof ParseTreeInfo.ParamInfo) {
+            theType = ((ParseTreeInfo.ParamInfo) infoOfIdent).type;
+        } else if (infoOfIdent instanceof ParseTreeInfo.LocalDeclInfo) {
+            theType = ((ParseTreeInfo.LocalDeclInfo) infoOfIdent).type;
+        } else { // if null or other type
+            throw new Exception("Identifier " + id.lexeme + " is not defined.");
+            //System.err.println("Unknown or null info object: " + infoOfIdent);
+        }
+        // theType is the type of id
+
+        if(theType.equals(exprInfo.type)){
+            // ok
+        }
+        else {
+            throw new Exception("Variable " + id.lexeme + " should have " + theType + 
+            " value, instead of " + exprInfo.type + " value.");
+        }
+
+
         // // Semantic analyzer not yet implemented
         // Object id_type = env.Get(id.lexeme);
         // {
@@ -307,7 +342,7 @@ public class ParserImpl
         //stmt.ident_reladdr = 1;
         return stmt;
     }
-    Object assignstmt____IDENT_LBRACKET_expr_RBRACKET_ASSIGN_expr_SEMI(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7)
+    Object assignstmt____IDENT_LBRACKET_expr_RBRACKET_ASSIGN_expr_SEMI(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7) throws Exception
     {
         Token id = (Token)s1;
         // Token lbr = (Token)s2;
@@ -318,6 +353,36 @@ public class ParserImpl
         Token semi = (Token)s7;
         String idName = id.lexeme;
         ParseTree.AssignStmtForArray stmtOut = new ParseTree.AssignStmtForArray(idName, expr1, expr2);
+        // check that expr is a num (not bool)
+        if(expr1.info.type.equals("num")){
+            // ok
+        }
+        else{
+            throw new Exception("Array index must be num value.");
+        }
+        // check that expr2 matches id content type
+        Object theVar = env.Get(idName);
+        String theType = null;
+        if(theVar instanceof ParseTreeInfo.LocalDeclInfo){
+            ParseTreeInfo.LocalDeclInfo varInfo = (ParseTreeInfo.LocalDeclInfo)theVar;
+            theType = varInfo.type;
+        }
+        else if(theVar instanceof ParseTreeInfo.ArgInfo){
+            ParseTreeInfo.ArgInfo varInfo = (ParseTreeInfo.ArgInfo)theVar;
+            theType = varInfo.type;
+        }
+
+        if(theType == null){ throw new Exception("Array type not found.");}
+        if(theType.equals("num[]")){theType = "num";}
+        else if(theType.equals("bool[]")){theType = "bool";}
+        
+        if(expr1.info.type.equals(expr2.info.type)){
+            // ok
+        }
+        else{
+            throw new Exception("Element of array " + id.lexeme + " should have a " 
+            + theType + " value, instead of a " + expr2.info.type + " value.");
+        }
         return stmtOut;
     }
 
@@ -813,6 +878,17 @@ public class ParserImpl
         ParseTree.Expr expr = (ParseTree.Expr)s4;
         // Token rbr = (Token)s5;
         ParseTree.ExprArrayNew theArray = new ParseTree.ExprArrayNew(thePrimType, expr);
+
+        // check if expr is a number
+        if(expr.info.type.equals("num")){
+            // good
+        }
+        else{
+            throw new Exception("Array index must be num value.");
+        }
+        // change info out to an array
+        ParseTreeInfo.TypeSpecInfo info = (ParseTreeInfo.TypeSpecInfo)thePrimType.info;
+        theArray.info.type = (info.type + "[]"); // array type is primtype[]
         return theArray;
     }
     Object expr____IDENT_LBRACKET_expr_RBRACKET(Object s1, Object s2, Object s3, Object s4) throws Exception
@@ -823,6 +899,32 @@ public class ParserImpl
         // Token rbr = (Token)s4;
         String idName = id.lexeme;
         ParseTree.ExprArrayElem theElem = new ParseTree.ExprArrayElem(idName, expr);
+        Object info = env.Get(idName);
+        if(info == null){
+            throw new Exception("Identifier " + idName + " is not defined.");
+        }
+        // check if expr is a number
+        if(expr.info.type.equals("num")){
+            // ok
+        }
+        else {
+            throw new Exception("Array index must be num value.");
+        }
+        String theType = null;
+        if(info instanceof ParseTreeInfo.ExprInfo){
+            theType = ((ParseTreeInfo.ExprInfo)info).type;
+        }
+        else if (info instanceof ParseTreeInfo.LocalDeclInfo){
+            theType = ((ParseTreeInfo.LocalDeclInfo)info).type;
+            // already know expr is a num from prev step
+            if(theType.equals("bool[]")) {theType = "bool";}
+            else if(theType.equals("num[]")) {theType = "num";}
+        }
+        else {
+            throw new Exception("Array type returned invalid.");
+        }
+        //ParseTreeInfo.ExprInfo exprInfo = (ParseTreeInfo.ExprInfo)info;
+        theElem.info.type = theType;
         return theElem;
     }
     Object expr____IDENT_DOT_SIZE(Object s1, Object s2, Object s3) throws Exception
@@ -831,8 +933,14 @@ public class ParserImpl
         Token dot = (Token)s2;
         Token size = (Token)s3;
         String idName = (id.lexeme);
-        ParseTree.ExprArraySize arrSize = new ParseTree.ExprArraySize(idName);
-        return arrSize;
+        ParseTree.ExprArraySize exprArr = new ParseTree.ExprArraySize(idName);
+        Object info = env.Get(idName);
+        if(info == null){
+            throw new Exception("Identifier " + idName + " is not defined.");
+        }
+        ParseTreeInfo.ExprInfo exprInfo = (ParseTreeInfo.ExprInfo)info;
+        exprArr.info.type = exprInfo.type;
+        return exprArr;
     }
 
     

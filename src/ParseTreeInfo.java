@@ -32,6 +32,8 @@ public class ParseTreeInfo
     // You should not modify ParseTree.java
     public static class TypeSpecInfo
     {
+        public String type;
+        public TypeSpecInfo() {}
     }
     public static class ProgramInfo
     {

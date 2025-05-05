@@ -15,7 +15,7 @@ public class Program {
          if(args.length == 0)
          args = new String[]
          {
-            "C:\\Users\\jdcoo\\Coding Stuff\\Compilers\\proj5-6-semantic-checker\\proj5-semantic-checker\\samples\\fail_02a.minc",
+            "C:\\Users\\jdcoo\\Coding Stuff\\Compilers\\proj5-6-semantic-checker\\proj5-semantic-checker\\samples\\fail_04a.minc",
             //  "C:\\cmpsc470-minc-SemanticChecker-sample\\minc\\"
             //  +"succ_01.minc",
          };

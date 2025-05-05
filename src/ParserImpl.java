@@ -1,5 +1,6 @@
 import java.rmi.server.ExportException;
 import java.util.*;
+import java.util.Stack;
 
 @SuppressWarnings("unchecked")
 public class ParserImpl
@@ -17,12 +18,39 @@ public class ParserImpl
     // this stores the root of parse tree, which will be used to print parse tree and run the parse tree
     ParseTree.Program parsetree_program = null;
 
+    Stack<String> mostRecentFunction = new Stack<>();
+    boolean mainReturnsNum = false;
+    boolean violatesMain = false;
+
     Object program____decllist(Object s1) throws Exception
     {
         // 1. check if decllist has main function having no parameters and returns int type
         // 2. assign the root, whose type is ParseTree.Program, to parsetree_program
         ArrayList<ParseTree.FuncDecl> decllist = (ArrayList<ParseTree.FuncDecl>)s1;
         parsetree_program = new ParseTree.Program(decllist);
+
+        Object mainFunc = env.Get("main");
+
+        if(mainFunc == null){
+            throw new Exception("The program must have one main function that returns num value and has no parameters.");
+        }
+
+        if(mainFunc instanceof ParseTreeInfo.FuncDeclInfo){
+            // ok
+        }
+        else {
+            throw new Exception("The program must have one main function that returns num value and has no parameters.");
+        }
+
+        ParseTreeInfo.FuncDeclInfo mainFuncInfo = (ParseTreeInfo.FuncDeclInfo)mainFunc;
+
+        if(mainReturnsNum && (violatesMain != true)){
+            // ok
+        }
+        else{
+            throw new Exception("The program must have one main function that returns num value and has no parameters.");
+        }
+
         return parsetree_program;
     }
 
@@ -104,7 +132,7 @@ public class ParserImpl
             i = i+1;
         }
 
-
+        mostRecentFunction.push(id);
         return null;
     }
     Object funcdecl____typespec_ID_LPAREN_params_RPAREN_BEGIN_localdecls_X8_stmtlist_END(Object s1, Object s2, Object s3, Object s4, Object s5, Object s6, Object s7, Object s8, Object s9, Object s10) throws Exception
@@ -121,6 +149,7 @@ public class ParserImpl
         ParseTree.FuncDecl funcdecl = new ParseTree.FuncDecl(id.lexeme, rettype, params, localdecls, stmtlist);
         // also exit out of the current env here
         env = env.prev;
+        mostRecentFunction.pop();
         return funcdecl;
     }
 
@@ -406,6 +435,35 @@ public class ParserImpl
         // 2. etc.
         // 3. create and return node
         ParseTree.Expr expr = (ParseTree.Expr)s2;
+
+        // get return types of most recent function
+        String theFunc = mostRecentFunction.peek();
+        Object infoIn = env.Get(theFunc);
+        if(infoIn instanceof ParseTreeInfo.FuncDeclInfo){
+            // ok
+        }
+        else {
+            throw new Exception("Identifier " + theFunc + " should be a function.");
+        }
+        ParseTreeInfo.FuncDeclInfo funcInfo = (ParseTreeInfo.FuncDeclInfo)infoIn;
+        // check if return types match
+        if(funcInfo.type.equals(expr.info.type)){
+            // ok
+        }
+        else {
+            throw new Exception("Function " + theFunc + "() should return a " + funcInfo.type 
+                + " value, instead of a " + expr.info.type + " value.");
+        }
+
+        if(theFunc.equals("main")){
+            if(expr.info.type.equals("num")){
+                mainReturnsNum = true;
+            }
+            else {
+                violatesMain = true;
+            }
+        }
+
         return new ParseTree.ReturnStmt(expr);
     }
 

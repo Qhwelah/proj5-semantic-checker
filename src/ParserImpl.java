@@ -362,6 +362,9 @@ public class ParserImpl
         }
         // check that expr2 matches id content type
         Object theVar = env.Get(idName);
+        if(theVar == null){
+            throw new Exception("Identifier " + idName + " is not defined.");
+        }
         String theType = null;
         if(theVar instanceof ParseTreeInfo.LocalDeclInfo){
             ParseTreeInfo.LocalDeclInfo varInfo = (ParseTreeInfo.LocalDeclInfo)theVar;
@@ -376,7 +379,7 @@ public class ParserImpl
         if(theType.equals("num[]")){theType = "num";}
         else if(theType.equals("bool[]")){theType = "bool";}
         
-        if(expr1.info.type.equals(expr2.info.type)){
+        if(theType.equals(expr2.info.type)){
             // ok
         }
         else{
@@ -595,7 +598,7 @@ public class ParserImpl
              + expr1.info.type + " and " + expr2.info.type + " values.");
         }
         ParseTree.ExprEq expr = new ParseTree.ExprEq(expr1,expr2);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     Object expr____expr_NE_expr(Object s1, Object s2, Object s3) throws Exception
@@ -615,7 +618,7 @@ public class ParserImpl
              + expr1.info.type + " and " + expr2.info.type + " values.");
         }
         ParseTree.ExprNe expr = new ParseTree.ExprNe(expr1,expr2);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     Object expr____expr_LE_expr(Object s1, Object s2, Object s3) throws Exception
@@ -635,7 +638,7 @@ public class ParserImpl
              + expr1.info.type + " and " + expr2.info.type + " values.");
         }
         ParseTree.ExprLe expr = new ParseTree.ExprLe(expr1,expr2);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     Object expr____expr_LT_expr(Object s1, Object s2, Object s3) throws Exception
@@ -655,7 +658,7 @@ public class ParserImpl
              + expr1.info.type + " and " + expr2.info.type + " values.");
         }
         ParseTree.ExprLt expr = new ParseTree.ExprLt(expr1,expr2);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     Object expr____expr_GE_expr(Object s1, Object s2, Object s3) throws Exception
@@ -675,7 +678,7 @@ public class ParserImpl
              + expr1.info.type + " and " + expr2.info.type + " values.");
         }
         ParseTree.ExprGe expr = new ParseTree.ExprGe(expr1,expr2);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     Object expr____expr_GT_expr(Object s1, Object s2, Object s3) throws Exception
@@ -695,7 +698,7 @@ public class ParserImpl
              + expr1.info.type + " and " + expr2.info.type + " values.");
         }
         ParseTree.ExprGt expr = new ParseTree.ExprGt(expr1,expr2);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     //
@@ -716,7 +719,7 @@ public class ParserImpl
              + expr1.info.type + " and " + expr2.info.type + " values.");
         }
         ParseTree.ExprAnd expr = new ParseTree.ExprAnd(expr1,expr2);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     Object expr____expr_OR_expr(Object s1, Object s2, Object s3) throws Exception
@@ -736,7 +739,7 @@ public class ParserImpl
              + expr1.info.type + " and " + expr2.info.type + " values.");
         }
         ParseTree.ExprOr expr = new ParseTree.ExprOr(expr1,expr2);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     //
@@ -752,7 +755,7 @@ public class ParserImpl
              + expr1.info.type + " value.");
         }
         ParseTree.ExprNot expr = new ParseTree.ExprNot(expr1);
-        expr.info.type = typeOut; // assign the output type to whatever input was
+        expr.info.type = "bool"; // assign the output type to whatever input was
         return expr;
     }
     Object expr____LPAREN_expr_RPAREN(Object s1, Object s2, Object s3) throws Exception
@@ -761,7 +764,9 @@ public class ParserImpl
         Token          lparen = (Token         )s1;
         ParseTree.Expr expr   = (ParseTree.Expr)s2;
         Token          rparen = (Token         )s3;
-        return new ParseTree.ExprParen(expr);
+        ParseTree.ExprParen exprOut = new ParseTree.ExprParen(expr);
+        exprOut.info.type = expr.info.type;
+        return exprOut;
     }
     Object expr____IDENT(Object s1) throws Exception
     {
@@ -916,6 +921,11 @@ public class ParserImpl
         }
         else if (info instanceof ParseTreeInfo.LocalDeclInfo){
             theType = ((ParseTreeInfo.LocalDeclInfo)info).type;
+            // if ident is not an array type, throw an error
+            if(theType.equals("bool") || theType.equals("num")){
+                throw new Exception("Identifier " + idName + " should be an array variable.");
+            }
+            
             // already know expr is a num from prev step
             if(theType.equals("bool[]")) {theType = "bool";}
             else if(theType.equals("num[]")) {theType = "num";}

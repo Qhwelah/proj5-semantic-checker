@@ -5,7 +5,7 @@ yacc.exe -Jthrows="Exception" -Jextends=ParserImpl -Jclass=Parser -Jnorun -J Par
 
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program
 
-goto comment
+goto commentDos
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe" TestEnv
 
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\succ_01.minc    > ..\samples\output_succ_01.txt 
@@ -20,6 +20,7 @@ goto comment
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\succ_10.minc    > ..\samples\output_succ_10.txt 
 
 del ..\samples\output_*.txt
+:commentDos
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_01a.minc   > ..\samples\output_fail_01a.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_01b.minc   > ..\samples\output_fail_01b.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_01c.minc   > ..\samples\output_fail_01c.txt
@@ -32,6 +33,7 @@ del ..\samples\output_*.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_04c.minc   > ..\samples\output_fail_04c.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_04d.minc   > ..\samples\output_fail_04d.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_04e.minc   > ..\samples\output_fail_04e.txt
+goto comment
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_05a.minc   > ..\samples\output_fail_05a.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_07a.minc   > ..\samples\output_fail_07a.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_08a.minc   > ..\samples\output_fail_08a.txt

@@ -113,7 +113,8 @@ if_stmt         : IF LPAREN expr RPAREN stmt ELSE stmt          { Debug("assign_
 while_stmt      : WHILE LPAREN expr RPAREN stmt                 { Debug("assign_stmt -> WHILE (expr) stmt"          ); $$ = whilestmt____WHILE_LPAREN_expr_RPAREN_stmt($1,$2,$3,$4,$5); }
                 ;
 
-compound_stmt   : BEGIN local_decls stmt_list END               { Debug("assign_stmt -> BEGIN local_decls stmt_list END"  ); $$ = compoundstmt____BEGIN_localdecls_stmtlist_END($1,$2,$3,$4);     }
+compound_stmt   : BEGIN local_decls                             { Debug("assign_stmt -> BEGIN local_decls                "); $<obj>$ =  compoundstmt____BEGIN_localdecls_3X_stmtlist_END($1,$2);                }
+                                    stmt_list END               { Debug("                                   stmt_list END"); $$ =       compoundstmt____BEGIN_localdecls_X3_stmtlist_END($1,$2,$3,$4,$5);       }
                 ;
 
 args            : arg_list                                      { Debug("args -> arg_list"                      ); $$ = args____arglist($1);    }

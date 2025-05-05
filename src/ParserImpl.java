@@ -420,6 +420,15 @@ public class ParserImpl
         Token theElse = (Token)s6;
         ParseTree.Stmt stmt2 = (ParseTree.Stmt)s7;
         ParseTree.IfStmt stmtOut = new ParseTree.IfStmt(expr, stmt1, stmt2);
+        
+        // Check if expr is a bool
+        if(expr.info.type.equals("bool")){
+            // ok
+        }
+        else {
+            throw new Exception("Condition of if or while statement should be a bool value.");
+        }
+
         return stmtOut;
     }
 
@@ -432,17 +441,36 @@ public class ParserImpl
         Token rparen = (Token)s4;
         ParseTree.Stmt stmt1 = (ParseTree.Stmt)s5;
         ParseTree.WhileStmt stmtOut = new ParseTree.WhileStmt(expr, stmt1);
+        // Check if expr is a bool
+        if(expr.info.type.equals("bool")){
+            // ok
+        }
+        else {
+            throw new Exception("Condition of if or while statement should be a bool value.");
+        }
         return stmtOut;
     }
 
     // == compound_stmt == //
-    Object compoundstmt____BEGIN_localdecls_stmtlist_END(Object s1, Object s2, Object s3, Object s4) throws Exception
+    Object compoundstmt____BEGIN_localdecls_3X_stmtlist_END(Object s1, Object s2) throws Exception
+    {
+        env = new Env(env);
+        ArrayList<ParseTree.LocalDecl> localDecls = (ArrayList<ParseTree.LocalDecl>)s2;
+        int i = 0;
+        while(i < localDecls.size()){
+            env.Put(localDecls.get(i).info.ident, localDecls.get(i).info);
+            i = i+1;
+        }
+        return null;
+    }
+    Object compoundstmt____BEGIN_localdecls_X3_stmtlist_END(Object s1, Object s2, Object s3, Object s4, Object s5) throws Exception
     {
         Token begin = (Token)s1;
         ArrayList<ParseTree.LocalDecl> localDeclsList = (ArrayList<ParseTree.LocalDecl>)s2;
-        ArrayList<ParseTree.Stmt> stmtList = (ArrayList<ParseTree.Stmt>)s3;
-        Token end = (Token)s4;
+        ArrayList<ParseTree.Stmt> stmtList = (ArrayList<ParseTree.Stmt>)s4;
+        Token end = (Token)s5;
         ParseTree.CompoundStmt stmtOut = new ParseTree.CompoundStmt(localDeclsList, stmtList);
+        env = env.prev;
         return stmtOut;
     }
     

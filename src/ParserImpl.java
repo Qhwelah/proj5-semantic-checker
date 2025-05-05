@@ -808,6 +808,10 @@ public class ParserImpl
 
         String theType = null;
 
+        if(infoOfIdent == null){
+            throw new Exception("Identifier " + id.lexeme + " is not defined.");
+        }
+
         if (infoOfIdent instanceof ParseTreeInfo.ExprInfo) {
             theType = ((ParseTreeInfo.ExprInfo) infoOfIdent).type;
         } else if (infoOfIdent instanceof ParseTreeInfo.ParamInfo) {
@@ -815,7 +819,7 @@ public class ParserImpl
         } else if (infoOfIdent instanceof ParseTreeInfo.LocalDeclInfo) {
             theType = ((ParseTreeInfo.LocalDeclInfo) infoOfIdent).type;
         } else { // if null or other type
-            throw new Exception("Identifier " + id.lexeme + " is not defined.");
+            throw new Exception("Identifier " + id.lexeme + " should be a variable.");
             //System.err.println("Unknown or null info object: " + infoOfIdent);
         }
         expr.info.type = theType;
@@ -863,7 +867,10 @@ public class ParserImpl
         
         Object func_attr = env.Get(id.lexeme);
         ParseTreeInfo.FuncDeclInfo funcDescr = null;
-        if(func_attr instanceof ParseTreeInfo.FuncDeclInfo){
+        if(func_attr == null){
+            throw new Exception("Identifier " + id.lexeme + " is not defined.");
+        }
+        else if(func_attr instanceof ParseTreeInfo.FuncDeclInfo){
             // pass
         }
         else{

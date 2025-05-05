@@ -5,7 +5,7 @@ yacc.exe -Jthrows="Exception" -Jextends=ParserImpl -Jclass=Parser -Jnorun -J Par
 
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program
 
-goto commentTres
+goto commentDos
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe" TestEnv
 
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\succ_01.minc    > ..\samples\output_succ_01.txt 
@@ -33,7 +33,7 @@ del ..\samples\output_*.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_04c.minc   > ..\samples\output_fail_04c.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_04d.minc   > ..\samples\output_fail_04d.txt
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_04e.minc   > ..\samples\output_fail_04e.txt
-goto comment
+goto commentTres
 
 :commentTres
 "C:\Program Files\Java\jdk-13.0.2\bin\java.exe"  Program   ..\samples\fail_05a.minc   > ..\samples\output_fail_05a.txt
